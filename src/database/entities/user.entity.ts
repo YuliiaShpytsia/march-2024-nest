@@ -8,10 +8,13 @@ import {
 } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
+import { CommentEntity } from './comment.entity';
+import { TableNameEnum } from './enums/table-name.enum';
+import { FollowEntity } from './follow.entity';
 import { LikeEntity } from './like.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
-@Entity('users')
+@Entity(TableNameEnum.USERS)
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -48,4 +51,13 @@ export class UserEntity {
 
   @OneToMany(() => LikeEntity, (entity) => entity.user)
   likes?: LikeEntity[];
+
+  @OneToMany(() => CommentEntity, (entity) => entity.user)
+  comments?: CommentEntity[];
+
+  @OneToMany(() => FollowEntity, (entity) => entity.follower)
+  followers?: FollowEntity[];
+
+  @OneToMany(() => FollowEntity, (entity) => entity.following)
+  followings?: FollowEntity[];
 }
