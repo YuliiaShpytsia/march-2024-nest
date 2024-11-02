@@ -1,4 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { ArticleEntity } from './article.entity';
+import { LikeEntity } from './like.entity';
+import { RefreshTokenEntity } from './refresh-token.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -6,17 +17,35 @@ export class UserEntity {
   id: string;
 
   @Column('text')
-  firstName: string;
+  name: string;
 
   @Column('text', { unique: true })
   email: string;
 
   @Column('text')
-  lastName: string;
+  password: string;
 
   @Column('boolean', { default: true })
   isActive: boolean;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   bio: string;
+
+  @Column('text', { nullable: true })
+  image: string;
+
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn()
+  updated: Date;
+
+  @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
+  refreshTokens?: RefreshTokenEntity[];
+
+  @OneToMany(() => ArticleEntity, (entity) => entity.user)
+  articles?: ArticleEntity[];
+
+  @OneToMany(() => LikeEntity, (entity) => entity.user)
+  likes?: LikeEntity[];
 }
