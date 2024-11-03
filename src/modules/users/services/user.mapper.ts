@@ -2,6 +2,7 @@ import { User } from '@sentry/nestjs';
 
 import { UserEntity } from '../../../database/entities/user.entity';
 import { IJwtPayload } from '../../auth/models/interfaces/jwt-payload.interface';
+import { IUserData } from '../../auth/models/interfaces/user-data.interface';
 import { UserResDto } from '../models/dto/res/user-res.dto';
 
 export class UserMapper {
@@ -15,7 +16,10 @@ export class UserMapper {
     };
   }
 
-  public static toIUserData(user: UserEntity, jwtPayload: IJwtPayload): any {
+  public static toIUserData(
+    user: UserEntity,
+    jwtPayload: IJwtPayload,
+  ): IUserData {
     return {
       userId: user.id,
       deviceId: jwtPayload.deviceId,
