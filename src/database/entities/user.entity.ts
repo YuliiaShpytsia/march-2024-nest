@@ -26,7 +26,7 @@ export class UserEntity {
   @Column('text', { unique: true })
   email: string;
 
-  @Column('text')
+  @Column('text', { select: false })
   password: string;
 
   @Column('boolean', { default: true })
