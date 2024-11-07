@@ -1,11 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserID } from '../../common/types/entity-ids.type';
 import { ArticleEntity } from './article.entity';
@@ -13,10 +6,11 @@ import { CommentEntity } from './comment.entity';
 import { TableNameEnum } from './enums/table-name.enum';
 import { FollowEntity } from './follow.entity';
 import { LikeEntity } from './like.entity';
+import { CreateUpdateModel } from './models/create-update.model';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
 @Entity(TableNameEnum.USERS)
-export class UserEntity {
+export class UserEntity extends CreateUpdateModel {
   @PrimaryGeneratedColumn('uuid')
   id: UserID;
 
@@ -38,11 +32,8 @@ export class UserEntity {
   @Column('text', { nullable: true })
   image: string;
 
-  @CreateDateColumn()
-  created: Date;
-
-  @UpdateDateColumn()
-  updated: Date;
+  @Column('timestamp', { nullable: true })
+  deleted?: Date;
 
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens?: RefreshTokenEntity[];

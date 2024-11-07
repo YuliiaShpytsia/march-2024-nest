@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { IsNull } from 'typeorm';
 
 import { UserRepository } from '../../repository/services/user.repository';
 import { UserMapper } from '../../users/services/user.mapper';
@@ -49,6 +50,7 @@ export class JwtAccessGuard implements CanActivate {
     }
     const user = await this.userRepository.findOneBy({
       id: payload.userId,
+      deleted: IsNull(),
     });
     if (!user) {
       throw new UnauthorizedException();
